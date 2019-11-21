@@ -1,11 +1,18 @@
 import React, { Component } from "react";
-import Movies from "./components/movies";
-import { Switch, Route } from "react-router-dom";
+import Routes from "./util/routes";
 import "./App.css";
+
+import Dashboard from "./components/container/dashboard";
+import NavBar from "./components/common/navbar";
 
 class App extends Component {
   render() {
-    return <h1>hi</h1>;
+    return (
+      <div className="container-fluid">
+        <NavBar></NavBar>
+        <Routes></Routes>
+      </div>
+    );
   }
 }
 
