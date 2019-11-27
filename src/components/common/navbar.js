@@ -24,6 +24,15 @@ const NavBar = () => {
               <NavDropdown.Item>
                 <NavLink to="/login">Login</NavLink>
               </NavDropdown.Item>
+              <NavDropdown.Item>
+                <NavLink to="/salary">Salary</NavLink>
+              </NavDropdown.Item>
+              <NavDropdown.Item>
+                <NavLink to="/fee">Fee</NavLink>
+              </NavDropdown.Item>
+              <NavDropdown.Item>
+                <NavLink to="/exercise">Exercises</NavLink>
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

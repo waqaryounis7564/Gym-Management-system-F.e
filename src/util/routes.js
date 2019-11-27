@@ -11,6 +11,11 @@ import Salary from "../components/container/salary";
 import Trainer from "../components/container/trainer";
 import Registration from "../components/common/registration";
 import Cardcomp from "../components/common/card";
+import LoginForm from "../components/common/loginForm";
+import SignUpForm from "../components/common/signUpForm";
+import CardDetails from "../components/common/cardDetails";
+import ExerciseCard from "../components/common/exerciseCard";
+import CreateExercise from "../components/common/formExercise";
 import RegisterUser from "../components/container/registerUser";
 import RegisterTrainer from "../components/container/registerTrainer";
 
@@ -29,6 +34,11 @@ const Routes = () => {
       <Route path="/registration" component={Registration}></Route>
       <Route path="/card" component={Cardcomp}></Route>
       <Route path="/registerUser" component={RegisterUser}></Route>
+      <Route path="/loginform" component={LoginForm}></Route>
+      <Route path="/signupform" component={SignUpForm}></Route>
+      <Route path="/exercisecard" component={ExerciseCard}></Route>
+      <Route path="/carddetails" component={CardDetails}></Route>
+      <Route path="/createexercise" component={CreateExercise}></Route>
       <Route path="/registerTrainer" component={RegisterTrainer}></Route>
     </Switch>
   );

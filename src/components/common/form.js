@@ -1,62 +1,114 @@
 import React, { Component } from "react";
-import { Form, Col, Button } from "react-bootstrap";
+
+import DatePicker from "react-datepicker";
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBBtn,
+  MDBInput,
+  MDBFormInline,
+  MDBBadge
+} from "mdbreact";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 class FormRegistration extends Component {
-  state = {};
+  state = {
+    startDate: Date.now(),
+
+    radio: 2
+  };
+  onClick = nr => () => {
+    this.setState({
+      radio: nr
+    });
+  };
+  handleChange = date => this.setState({ startDate: date });
+
   render() {
     return (
       <React.Fragment>
-        <Form>
-          <Form.Row>
-            <Form.Group as={Col} controlId="formGridEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
-            </Form.Group>
+        <MDBContainer>
+          <MDBRow>
+            <MDBCol md="6">
+              <form>
+                <p className="h5 text-center mb-4">User</p>
+                <div className="grey-text">
+                  <MDBInput
+                    label="Your name"
+                    icon="user"
+                    group
+                    type="text"
+                    validate
+                    error="wrong"
+                    success="right"
+                  />
+                  <MDBInput
+                    label="Your cnic"
+                    icon="id-card"
+                    group
+                    type="text"
+                    validate
+                    error="wrong"
+                    success="right"
+                  />
+                  <MDBInput
+                    label="Your age"
+                    icon="user"
+                    group
+                    type="text"
+                    validate
+                    error="wrong"
+                    success="right"
+                  />
+                  <MDBInput
+                    label="Your mobile"
+                    icon="mobile"
+                    group
+                    type="text"
+                    validate
+                    error="wrong"
+                    success="right"
+                  />
+                  <MDBFormInline>
+                    <MDBInput
+                      label="Male"
+                      icon="male"
+                      group
+                      type="radio"
+                      id="radio1"
+                      containerClass="mr-5"
+                      onClick={this.onClick(1)}
+                      checked={this.state.radio === 1 ? true : false}
+                    />
+                    <MDBInput
+                      icon="female"
+                      label="Female"
+                      group
+                      type="radio"
+                      id="radio2"
+                      containerClass="mr-5"
+                      onClick={this.onClick(2)}
+                      checked={this.state.radio === 2 ? true : false}
+                    />
+                  </MDBFormInline>
 
-            <Form.Group as={Col} controlId="formGridPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
-            </Form.Group>
-          </Form.Row>
+                  <MDBBadge color="secondary">Joining Date</MDBBadge>
+                  <br />
 
-          <Form.Group controlId="formGridAddress1">
-            <Form.Label>Address</Form.Label>
-            <Form.Control placeholder="1234 Main St" />
-          </Form.Group>
-
-          <Form.Group controlId="formGridAddress2">
-            <Form.Label>Address 2</Form.Label>
-            <Form.Control placeholder="Apartment, studio, or floor" />
-          </Form.Group>
-
-          <Form.Row>
-            <Form.Group as={Col} controlId="formGridCity">
-              <Form.Label>City</Form.Label>
-              <Form.Control />
-            </Form.Group>
-
-            <Form.Group as={Col} controlId="formGridState">
-              <Form.Label>State</Form.Label>
-              <Form.Control as="select">
-                <option>Choose...</option>
-                <option>...</option>
-              </Form.Control>
-            </Form.Group>
-
-            <Form.Group as={Col} controlId="formGridZip">
-              <Form.Label>Zip</Form.Label>
-              <Form.Control />
-            </Form.Group>
-          </Form.Row>
-
-          <Form.Group id="formGridCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-          </Form.Group>
-
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
+                  <DatePicker
+                    selected={this.state.startDate}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div className="text-center">
+                  <MDBBtn color="primary">Register</MDBBtn>
+                </div>
+              </form>
+            </MDBCol>
+          </MDBRow>
+        </MDBContainer>
       </React.Fragment>
     );
   }

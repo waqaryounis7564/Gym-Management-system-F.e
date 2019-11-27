@@ -1,16 +1,23 @@
 import React, { Component } from "react";
+import { getMembers, getMember } from "../../service/memberService";
+import http from "../../util/httpService";
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 import Stat from "../common/stat";
-import { getMovies } from "../../service/fakeMovieService";
 
 class Dashboard extends Component {
-  state = { movies: getMovies() };
-
+  state = {};
+  async componentDidMount() {
+    const { data } = await getMember("5dcd256b2b8e182b900bd5be");
+    console.log(data);
+  }
   render() {
-    console.log(this.state.movies);
     return (
       <div className="jumbotron-fluid">
-        <Stat members={this.state.movies.length}></Stat>
+        <ToastContainer />
+        <Stat></Stat>
       </div>
     );
   }

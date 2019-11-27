@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import Joi from "joi-browser";
 
@@ -107,7 +108,7 @@ class Login extends Component {
               </Segment>
             </Form>
             <Message>
-              New to us? <a href="#">Sign Up</a>
+              New to us? <Link to="/signupform">Sign Up</Link>
             </Message>
           </Grid.Column>
         </Grid>

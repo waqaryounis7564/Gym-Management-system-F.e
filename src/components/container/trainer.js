@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Table from "../common/table";
+import Table from "../common/tableT";
 import BtnR from "../common/buttonR";
+import { getTrainers } from "../../service/trainerService";
 
 class Trainer extends Component {
-  state = {};
+  state = { trainers: [] };
+  async componentDidMount() {
+    const { data: trainers } = await getTrainers();
+    this.setState({ trainers });
+  }
   render() {
     return (
       <div>
@@ -13,7 +18,7 @@ class Trainer extends Component {
           <BtnR name="Register new Trainer"></BtnR>
         </Link>
 
-        <Table></Table>
+        <Table trainers={this.state.trainers}></Table>
       </div>
     );
   }
