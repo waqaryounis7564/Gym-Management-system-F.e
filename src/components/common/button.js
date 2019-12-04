@@ -3,16 +3,11 @@ import { Button, Icon } from "semantic-ui-react";
 
 class Btn extends Component {
   state = {};
-  handleDelete = () => {
-    const movie = this.props.movies.filter(
-      movi => movi._id !== this.props.movie._id
-    );
-    console.log(movie);
-  };
+
   render() {
     return (
       <React.Fragment>
-        <Button animated negative onClick={this.handleDelete}>
+        <Button animated negative onClick={this.props.delete}>
           <Button.Content visible>Delete</Button.Content>
           <Button.Content hidden>
             <Icon name="user delete" />

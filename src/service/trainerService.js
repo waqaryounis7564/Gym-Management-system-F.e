@@ -24,6 +24,6 @@ export function getTrainer(id) {
 //   return trainerInDb;
 // }
 
-export function deletetrainer(id) {
+export function deleteTrainer(id) {
   return http.delete(backend + "trainer/" + id);
 }

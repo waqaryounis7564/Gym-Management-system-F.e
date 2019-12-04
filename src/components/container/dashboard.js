@@ -9,10 +9,7 @@ import Stat from "../common/stat";
 
 class Dashboard extends Component {
   state = {};
-  async componentDidMount() {
-    const { data } = await getMember("5dcd256b2b8e182b900bd5be");
-    console.log(data);
-  }
+  async componentDidMount() {}
   render() {
     return (
       <div className="jumbotron-fluid">

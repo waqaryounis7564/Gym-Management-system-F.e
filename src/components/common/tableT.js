@@ -3,7 +3,7 @@ import Button from "./button";
 
 import { Link } from "react-router-dom";
 
-const Table = ({ trainers }) => {
+const Table = ({ trainers, handleDelete }) => {
   return (
     <React.Fragment>
       <table className="table  table-hover  ">
@@ -30,7 +30,9 @@ const Table = ({ trainers }) => {
                 <td>{trainers.indexOf(trainer) + 1}</td>
 
                 <td>
-                  <Link to="/card">{trainer.name}</Link>
+                  <Link to={`/registerUser/${trainer._id}`}>
+                    {trainer.name}
+                  </Link>
                 </td>
                 <td>{trainer.mobile}</td>
                 <td>{trainer.gender}</td>
@@ -38,7 +40,7 @@ const Table = ({ trainers }) => {
                 <td>{trainer.cnic}</td>
                 <td>{trainer.dateOfJoining}</td>
                 <td>
-                  <Button />
+                  <Button delete={() => handleDelete(trainer._id)} />
                 </td>
               </tr>
             ))

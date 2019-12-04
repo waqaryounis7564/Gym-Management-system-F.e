@@ -18,12 +18,14 @@ import ExerciseCard from "../components/common/exerciseCard";
 import CreateExercise from "../components/common/formExercise";
 import RegisterUser from "../components/container/registerUser";
 import RegisterTrainer from "../components/container/registerTrainer";
+import Logout from "../components/common/logout";
 
 const Routes = () => {
   return (
     <Switch>
       <Route exact path="/dashboard" component={Dashboard}></Route>
       <Route path="/login" component={Login}></Route>
+      <Route path="/logout" component={Logout}></Route>
       <Route path="/equipment" component={Equipment}></Route>
       <Route path="/exercise" component={Exercise}></Route>
       <Route path="/member/:id?" component={Member}></Route>
@@ -33,13 +35,13 @@ const Routes = () => {
       <Route path="/salary" component={Salary}></Route>
       <Route path="/registration" component={Registration}></Route>
       <Route path="/card" component={Cardcomp}></Route>
-      <Route path="/registerUser" component={RegisterUser}></Route>
+      <Route path="/registerUser/:id?" component={RegisterUser}></Route>
       <Route path="/loginform" component={LoginForm}></Route>
       <Route path="/signupform" component={SignUpForm}></Route>
       <Route path="/exercisecard" component={ExerciseCard}></Route>
       <Route path="/carddetails" component={CardDetails}></Route>
       <Route path="/createexercise" component={CreateExercise}></Route>
-      <Route path="/registerTrainer" component={RegisterTrainer}></Route>
+      <Route path="/registerTrainer/:id?" component={RegisterTrainer}></Route>
     </Switch>
   );
 };

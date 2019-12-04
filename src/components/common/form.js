@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import moment from "moment";
 
 import DatePicker from "react-datepicker";
 import {
@@ -15,17 +16,25 @@ import "react-datepicker/dist/react-datepicker.css";
 
 class FormRegistration extends Component {
   state = {
-    startDate: Date.now(),
+    startDate: new Date(),
 
-    radio: 2
+    radio: ""
   };
-  onClick = nr => () => {
+  onClick = nr => e => {
     this.setState({
       radio: nr
     });
+    this.props.user.gender = e.currentTarget.name;
   };
-  handleChange = date => this.setState({ startDate: date });
-
+  handleChange = date => {
+    this.props.user.dateOfJoining = date.getDate();
+    // dateFormat = "MMMM d, yyyy h:mm aa";
+    //date = moment(e);
+    this.setState({
+      startDate: date
+    });
+    console.log(this.state.startDate);
+  };
   render() {
     return (
       <React.Fragment>
@@ -36,6 +45,7 @@ class FormRegistration extends Component {
                 <p className="h5 text-center mb-4">User</p>
                 <div className="grey-text">
                   <MDBInput
+                    name="name"
                     label="Your name"
                     icon="user"
                     group
@@ -43,8 +53,11 @@ class FormRegistration extends Component {
                     validate
                     error="wrong"
                     success="right"
+                    value={this.props.user.name}
+                    onChange={this.props.onChange}
                   />
                   <MDBInput
+                    name="cnic"
                     label="Your cnic"
                     icon="id-card"
                     group
@@ -52,8 +65,11 @@ class FormRegistration extends Component {
                     validate
                     error="wrong"
                     success="right"
+                    value={this.props.user.cnic}
+                    onChange={this.props.onChange}
                   />
                   <MDBInput
+                    name="age"
                     label="Your age"
                     icon="user"
                     group
@@ -61,8 +77,11 @@ class FormRegistration extends Component {
                     validate
                     error="wrong"
                     success="right"
+                    value={this.props.user.age}
+                    onChange={this.props.onChange}
                   />
                   <MDBInput
+                    name="mobile"
                     label="Your mobile"
                     icon="mobile"
                     group
@@ -70,10 +89,13 @@ class FormRegistration extends Component {
                     validate
                     error="wrong"
                     success="right"
+                    value={this.props.user.mobile}
+                    onChange={this.props.onChange}
                   />
                   <MDBFormInline>
                     <MDBInput
                       label="Male"
+                      name="Male"
                       icon="male"
                       group
                       type="radio"
@@ -85,6 +107,7 @@ class FormRegistration extends Component {
                     <MDBInput
                       icon="female"
                       label="Female"
+                      name="Female"
                       group
                       type="radio"
                       id="radio2"
@@ -100,10 +123,13 @@ class FormRegistration extends Component {
                   <DatePicker
                     selected={this.state.startDate}
                     onChange={this.handleChange}
+                    name="dateOfJoining"
                   />
                 </div>
                 <div className="text-center">
-                  <MDBBtn color="primary">Register</MDBBtn>
+                  <MDBBtn color="primary" onClick={this.props.onSubmit}>
+                    Register
+                  </MDBBtn>
                 </div>
               </form>
             </MDBCol>

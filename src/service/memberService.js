@@ -9,20 +9,9 @@ export function getMember(id) {
   return http.get(backend + "member/" + id);
 }
 
-// export function savemember(member) {
-//   let memberInDb = members.find(m => m._id === member._id) || {};
-//   memberInDb.name = member.name;
-//   memberInDb.genre = genresAPI.genres.find(g => g._id === member.genreId);
-//   memberInDb.numberInStock = member.numberInStock;
-//   memberInDb.dailyRentalRate = member.dailyRentalRate;
-
-//   if (!memberInDb._id) {
-//     memberInDb._id = Date.now();
-//     members.push(memberInDb);
-//   }
-
-//   return memberInDb;
-// }
+export function saveMember(member) {
+  return http.post(backend + "member", {"exercise_id":"5dcd0b46508cc92cbce1f7df",member});
+}
 
 export function deleteMember(id) {
   return http.delete(backend + "member/" + id);
