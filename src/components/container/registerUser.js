@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import FormRegistration from "../common/form";
 import { getMember, saveMember } from "../../service/memberService";
+import { getExercises } from "../../service/exerciseService";
 
-class RegisterUser extends Component {
+import Form from "../common/reForm";
+
+class RegisterUser extends Form {
   state = {
-    members: [],
     data: {
       name: "",
       mobile: "",
@@ -14,7 +16,24 @@ class RegisterUser extends Component {
       dateOfJoining: "",
       exercise_id: ""
     },
-    trainers: []
+    errors: {},
+    exercises: [],
+    startDate: new Date(),
+    radio: ""
+  };
+  genderHandler = nr => e => {
+    this.state.data.gender = e.currentTarget.name;
+    this.setState({
+      radio: nr
+    });
+  };
+
+  dateHandler = date => {
+    this.state.data.dateOfJoining = date.toLocaleDateString("en-US");
+
+    this.setState({
+      startDate: date
+    });
   };
   onChange = e => {
     const data = { ...this.state.data };
@@ -24,16 +43,19 @@ class RegisterUser extends Component {
     this.setState({ data });
   };
   async componentDidMount() {
+    const { data: exercises } = await getExercises();
+    this.setState({ exercises });
+
     const userId = this.props.match.params.id;
     if (userId === "new") return;
-
     const { data: user } = await getMember(userId);
     this.setState({ data: this.mapToViewModel(user) });
+    console.log(user);
   }
   mapToViewModel = user => {
     return {
       _id: user._id,
-      //exerciseAssigned: user.exercisesAssigned._id,
+      exercise_id: user.exercisesAssigned._id,
       name: user.name,
       mobile: user.mobile,
       cnic: user.cnic,
@@ -42,14 +64,17 @@ class RegisterUser extends Component {
       dateOfJoining: user.dateOfJoining
     };
   };
+
   doSubmit = async () => {
+    console.log("clicked");
     console.log(this.state.data);
+    await saveMember(this.state.data);
     this.props.history.push("/member");
-    // try {
-    //   await saveMember(this.state.data);
-    // } catch (ex) {
-    //   if (ex.response && ex.response.status < 500) console.log(ex);
-    // }
+    //   // try {
+    //   //   await saveMember(this.state.data);
+    //   // } catch (ex) {
+    //   //   if (ex.response && ex.response.status < 500) console.log(ex);
+    //   // }
   };
   render() {
     return (
@@ -57,8 +82,13 @@ class RegisterUser extends Component {
         <h1>Register User</h1>
         <FormRegistration
           user={this.state.data}
+          exercises={this.state.exercises}
           onSubmit={this.doSubmit}
           onChange={this.onChange}
+          onGenderChange={this.genderHandler}
+          radio={this.state.radio}
+          date={this.state.startDate}
+          onDateChange={this.dateHandler}
         ></FormRegistration>
       </React.Fragment>
     );

@@ -3,6 +3,7 @@ import Decode from "jwt-decode";
 import { Link, NavLink } from "react-router-dom";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { Icon } from "semantic-ui-react";
+import { getMember, getMembers } from "../../service/memberService";
 
 class NavBar extends Component {
   state = {};
@@ -12,9 +13,10 @@ class NavBar extends Component {
       const user = Decode(token);
       this.setState({ user });
     } catch (error) {
-      console.log("token is not availaable");
+      console.log("token is not available");
     }
   }
+
   render() {
     return (
       <React.Fragment>

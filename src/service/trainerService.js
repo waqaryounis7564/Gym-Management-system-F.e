@@ -9,20 +9,14 @@ export function getTrainer(id) {
   return http.get(backend + "trainer/" + id);
 }
 
-// export function savetrainer(trainer) {
-//   let trainerInDb = trainers.find(m => m._id === trainer._id) || {};
-//   trainerInDb.name = trainer.name;
-//   trainerInDb.genre = genresAPI.genres.find(g => g._id === trainer.genreId);
-//   trainerInDb.numberInStock = trainer.numberInStock;
-//   trainerInDb.dailyRentalRate = trainer.dailyRentalRate;
-
-//   if (!trainerInDb._id) {
-//     trainerInDb._id = Date.now();
-//     mrainers.push(trainerInDb);
-//   }
-
-//   return trainerInDb;
-// }
+export function saveTrainer(trainer) {
+  if (trainer._id) {
+    const body = { ...trainer };
+    delete body._id;
+    return http.put(backend + "trainer/" + trainer._id, body);
+  }
+  return http.post(backend + "trainer/", trainer);
+}
 
 export function deleteTrainer(id) {
   return http.delete(backend + "trainer/" + id);

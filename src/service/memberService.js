@@ -10,7 +10,12 @@ export function getMember(id) {
 }
 
 export function saveMember(member) {
-  return http.post(backend + "member", {"exercise_id":"5dcd0b46508cc92cbce1f7df",member});
+  if (member._id) {
+    const body = { ...member };
+    delete body._id;
+    return http.put(backend + "member/" + member._id, body);
+  }
+  return http.post(backend + "member/", member);
 }
 
 export function deleteMember(id) {

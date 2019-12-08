@@ -30,7 +30,7 @@ const Table = ({ trainers, handleDelete }) => {
                 <td>{trainers.indexOf(trainer) + 1}</td>
 
                 <td>
-                  <Link to={`/registerUser/${trainer._id}`}>
+                  <Link to={`/registerTrainer/${trainer._id}`}>
                     {trainer.name}
                   </Link>
                 </td>

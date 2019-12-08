@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
+import Select from "./select";
 
 import DatePicker from "react-datepicker";
 import Form from "./reForm";
@@ -75,9 +76,9 @@ class FormRegistration extends Form {
                   />
 
                   {this.renderSelect(
-                    "exercise_id",
-                    "Exercises",
-                    this.props.exercises
+                    "assignedMember_id",
+                    "Members",
+                    this.props.members
                   )}
 
                   <MDBFormInline>

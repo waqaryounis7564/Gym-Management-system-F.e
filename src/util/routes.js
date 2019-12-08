@@ -36,6 +36,7 @@ const Routes = () => {
       <Route path="/registration" component={Registration}></Route>
       <Route path="/card" component={Cardcomp}></Route>
       <Route path="/registerUser/:id?" component={RegisterUser}></Route>
+      <Route path="/registerTrainer/:id?" component={RegisterTrainer}></Route>
       <Route path="/loginform" component={LoginForm}></Route>
       <Route path="/signupform" component={SignUpForm}></Route>
       <Route path="/exercisecard" component={ExerciseCard}></Route>
