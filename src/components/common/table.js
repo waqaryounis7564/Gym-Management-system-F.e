@@ -20,23 +20,31 @@ const Table = ({ members, handleDelete }) => {
           </tr>
         </thead>
         <tbody>
-          {members.map(member => (
-            <tr key={member._id}>
-              <td>{members.indexOf(member) + 1}</td>
+          {members.length === 0 ? (
+            <React.Fragment>
+              <div class="spinner-grow text-primary slow" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </React.Fragment>
+          ) : (
+            members.map(member => (
+              <tr key={member._id}>
+                <td>{members.indexOf(member) + 1}</td>
 
-              <td>
-                <Link to={`/registerUser/${member._id}`}>{member.name}</Link>
-              </td>
-              <td>{member.mobile}</td>
-              <td>{member.gender}</td>
-              <td>{member.age}</td>
-              <td>{member.cnic}</td>
-              <td>{member.dateOfJoining}</td>
-              <td>
-                <Button delete={() => handleDelete(member._id)} />
-              </td>
-            </tr>
-          ))}
+                <td>
+                  <Link to={`/registerUser/${member._id}`}>{member.name}</Link>
+                </td>
+                <td>{member.mobile}</td>
+                <td>{member.gender}</td>
+                <td>{member.age}</td>
+                <td>{member.cnic}</td>
+                <td>{member.dateOfJoining}</td>
+                <td>
+                  <Button delete={() => handleDelete(member._id)} />
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </React.Fragment>

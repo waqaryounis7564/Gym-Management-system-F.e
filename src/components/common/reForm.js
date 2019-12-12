@@ -50,8 +50,7 @@ class Form extends Component {
     const data = { ...this.state.data };
 
     data[e.currentTarget.name] = e.currentTarget.value;
-
-    this.props.user[e.currentTarget.name] = e.currentTarget.value;
+    this.setState({ data });
   };
   renderSelect(name, label, options) {
     const { data } = this.state;

@@ -1,34 +1,23 @@
-// import http from "../util/httpService";
-// import config from "../config.json";
-// import axios from "axios";
+import { backend } from "../config.json";
+import http from "../util/httpService";
 
-// const members = [];
+export function getFees() {
+  return http.get(backend + "fee");
+}
 
-// export function getMembers() {
-//   return axios.get("http://localhost:4000/member");
-// }
+export function getFee(id) {
+  return http.get(backend + "fee/" + id);
+}
 
-// // export function getMovie(id) {
-// //   return movies.find(m => m._id === id);
-// // }
+export function saveFee(fee) {
+  if (fee._id) {
+    const body = { ...fee };
+    delete body._id;
+    return http.put(backend + "fee/" + fee._id, body);
+  }
+  return http.post(backend + "fee/", fee);
+}
 
-// // export function saveMovie(movie) {
-// //   let movieInDb = movies.find(m => m._id === movie._id) || {};
-// //   movieInDb.name = movie.name;
-// //   movieInDb.genre = genresAPI.genres.find(g => g._id === movie.genreId);
-// //   movieInDb.numberInStock = movie.numberInStock;
-// //   movieInDb.dailyRentalRate = movie.dailyRentalRate;
-
-// //   if (!movieInDb._id) {
-// //     movieInDb._id = Date.now();
-// //     movies.push(movieInDb);
-// //   }
-
-// //   return movieInDb;
-// // }
-
-// // export function deleteMovie(id) {
-// //   let movieInDb = movies.find(m => m._id === id);
-// //   movies.splice(movies.indexOf(movieInDb), 1);
-// //   return movieInDb;
-// // }
+export function deleteFee(id) {
+  return http.delete(backend + "fee/" + id);
+}

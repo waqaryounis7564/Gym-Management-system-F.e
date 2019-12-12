@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
+import { getMember, saveMember } from "../../service/memberService";
+import { getExercises } from "../../service/exerciseService";
 
 import DatePicker from "react-datepicker";
 import Form from "./reForm";
@@ -16,6 +18,75 @@ import {
 import "react-datepicker/dist/react-datepicker.css";
 
 class FormRegistration extends Form {
+  state = {
+    data: {
+      name: "",
+      mobile: "",
+      gender: "",
+      age: "",
+      cnic: "",
+      dateOfJoining: ""
+    },
+    errors: {},
+    exercises: [],
+    startDate: new Date(),
+    radio: ""
+  };
+  genderHandler = nr => e => {
+    this.state.data.gender = e.currentTarget.name;
+    this.setState({
+      radio: nr
+    });
+  };
+
+  dateHandler = date => {
+    this.state.data.dateOfJoining = date.toLocaleDateString("en-US");
+
+    this.setState({
+      startDate: date
+    });
+  };
+  onChange = e => {
+    const data = { ...this.state.data };
+
+    data[e.currentTarget.name] = e.currentTarget.value;
+
+    this.setState({ data });
+  };
+  async componentDidMount() {
+    const { data: exercises } = await getExercises();
+    this.setState({ exercises });
+
+    const userId = this.props.match.params.id;
+    if (userId === "new") return;
+    const { data: user } = await getMember(userId);
+    this.setState({ data: this.mapToViewModel(user) });
+    console.log(user);
+  }
+  mapToViewModel = user => {
+    return {
+      _id: user._id,
+
+      name: user.name,
+      mobile: user.mobile,
+      cnic: user.cnic,
+      gender: user.gender,
+      age: user.age,
+      dateOfJoining: user.dateOfJoining
+    };
+  };
+
+  doSubmit = async () => {
+    console.log("clicked");
+    console.log(this.state.data);
+    await saveMember(this.state.data);
+    this.props.history.push("/member");
+    //   // try {
+    //   //   await saveMember(this.state.data);
+    //   // } catch (ex) {
+    //   //   if (ex.response && ex.response.status < 500) console.log(ex);
+    //   // }
+  };
   render() {
     return (
       <React.Fragment>
@@ -34,8 +105,8 @@ class FormRegistration extends Form {
                     validate
                     error="wrong"
                     success="right"
-                    value={this.props.user.name}
-                    onChange={this.props.onChange}
+                    value={this.state.data.name}
+                    onChange={this.onChange}
                   />
                   <MDBInput
                     name="cnic"
@@ -46,8 +117,8 @@ class FormRegistration extends Form {
                     validate
                     error="wrong"
                     success="right"
-                    value={this.props.user.cnic}
-                    onChange={this.props.onChange}
+                    value={this.state.data.cnic}
+                    onChange={this.onChange}
                   />
                   <MDBInput
                     name="age"
@@ -58,8 +129,8 @@ class FormRegistration extends Form {
                     validate
                     error="wrong"
                     success="right"
-                    value={this.props.user.age}
-                    onChange={this.props.onChange}
+                    value={this.state.data.age}
+                    onChange={this.onChange}
                   />
                   <MDBInput
                     name="mobile"
@@ -70,15 +141,9 @@ class FormRegistration extends Form {
                     validate
                     error="wrong"
                     success="right"
-                    value={this.props.user.mobile}
-                    onChange={this.props.onChange}
+                    value={this.state.data.mobile}
+                    onChange={this.onChange}
                   />
-
-                  {this.renderSelect(
-                    "exercise_id",
-                    "Exercises",
-                    this.props.exercises
-                  )}
 
                   <MDBFormInline>
                     <MDBInput
@@ -89,8 +154,8 @@ class FormRegistration extends Form {
                       type="radio"
                       id="radio1"
                       containerClass="mr-5"
-                      onClick={this.props.onGenderChange(1)}
-                      checked={this.props.radio === 1 ? true : false}
+                      onClick={this.genderHandler(1)}
+                      checked={this.state.radio === 1 ? true : false}
                     />
                     <MDBInput
                       icon="female"
@@ -100,8 +165,8 @@ class FormRegistration extends Form {
                       type="radio"
                       id="radio2"
                       containerClass="mr-5"
-                      onClick={this.props.onGenderChange(2)}
-                      checked={this.props.radio === 2 ? true : false}
+                      onClick={this.genderHandler(2)}
+                      checked={this.state.radio === 2 ? true : false}
                     />
                   </MDBFormInline>
 
@@ -109,14 +174,14 @@ class FormRegistration extends Form {
                   <br />
 
                   <DatePicker
-                    selected={this.props.date}
-                    onChange={this.props.onDateChange}
+                    selected={this.state.startDate}
+                    onChange={this.dateHandler}
                     name="dateOfJoining"
                     dateFormat="MMMM d, yyyy "
                   />
                 </div>
                 <div className="text-center">
-                  <MDBBtn color="primary" onClick={this.props.onSubmit}>
+                  <MDBBtn color="primary" onClick={this.doSubmit}>
                     Register
                   </MDBBtn>
                 </div>

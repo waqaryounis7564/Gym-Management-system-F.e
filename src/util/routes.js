@@ -16,9 +16,15 @@ import SignUpForm from "../components/common/signUpForm";
 import CardDetails from "../components/common/cardDetails";
 import ExerciseCard from "../components/common/exerciseCard";
 import CreateExercise from "../components/common/formExercise";
-import RegisterUser from "../components/container/registerUser";
+import Reports from "../components/container/reports";
 import RegisterTrainer from "../components/container/registerTrainer";
+import TrainerForm from "../components/common/TRegistrationForm";
+import UserForm from "../components/common/form";
 import Logout from "../components/common/logout";
+import RegisterFee from "../components/common/registerFee";
+import RegisterSalary from "../components/common/registerSalary";
+import RegisterEquipment from "../components/common/registerEquipment";
+import RegisterRecords from "../components/common/registerPhysical";
 
 const Routes = () => {
   return (
@@ -27,22 +33,26 @@ const Routes = () => {
       <Route path="/login" component={Login}></Route>
       <Route path="/logout" component={Logout}></Route>
       <Route path="/equipment" component={Equipment}></Route>
+      <Route path="/createequipment/:id?" component={RegisterEquipment}></Route>
       <Route path="/exercise" component={Exercise}></Route>
       <Route path="/member/:id?" component={Member}></Route>
       <Route path="/trainer" component={Trainer}></Route>
       <Route path="/physical" component={PhysicalRecord}></Route>
-      <Route path="/fee/" component={Fee}></Route>
+      <Route path="/registerphysical/:id?" component={RegisterRecords}></Route>
+      <Route path="/fee" component={Fee}></Route>
+      <Route path="/report" component={Reports}></Route>
+      <Route path="/getfee/:id?" component={RegisterFee}></Route>
       <Route path="/salary" component={Salary}></Route>
+      <Route path="/getsalary/:id?" component={RegisterSalary}></Route>
       <Route path="/registration" component={Registration}></Route>
       <Route path="/card" component={Cardcomp}></Route>
-      <Route path="/registerUser/:id?" component={RegisterUser}></Route>
-      <Route path="/registerTrainer/:id?" component={RegisterTrainer}></Route>
+      <Route path="/registerUser/:id?" component={UserForm}></Route>
+      <Route path="/registerTrainer/:id?" component={TrainerForm}></Route>
       <Route path="/loginform" component={LoginForm}></Route>
       <Route path="/signupform" component={SignUpForm}></Route>
       <Route path="/exercisecard" component={ExerciseCard}></Route>
       <Route path="/carddetails" component={CardDetails}></Route>
-      <Route path="/createexercise" component={CreateExercise}></Route>
-      <Route path="/registerTrainer/:id?" component={RegisterTrainer}></Route>
+      <Route path="/createexercise/:id?" component={CreateExercise}></Route>
     </Switch>
   );
 };

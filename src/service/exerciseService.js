@@ -5,27 +5,19 @@ export function getExercises() {
   return http.get(backend + "exercise");
 }
 
-// export function getMovie(id) {
-//   return movies.find(m => m._id === id);
-// }
+export function getExercise(id) {
+  return http.get(backend + "exercise/" + id);
+}
 
-// export function saveMovie(movie) {
-//   let movieInDb = movies.find(m => m._id === movie._id) || {};
-//   movieInDb.name = movie.name;
-//   movieInDb.genre = genresAPI.genres.find(g => g._id === movie.genreId);
-//   movieInDb.numberInStock = movie.numberInStock;
-//   movieInDb.dailyRentalRate = movie.dailyRentalRate;
+export function saveExercise(exercise) {
+  if (exercise._id) {
+    const body = { ...exercise };
+    delete body._id;
+    return http.put(backend + "exercise/" + exercise._id, body);
+  }
+  return http.post(backend + "exercise/", exercise);
+}
 
-//   if (!movieInDb._id) {
-//     movieInDb._id = Date.now();
-//     movies.push(movieInDb);
-//   }
-
-//   return movieInDb;
-// }
-
-// export function deleteMovie(id) {
-//   let movieInDb = movies.find(m => m._id === id);
-//   movies.splice(movies.indexOf(movieInDb), 1);
-//   return movieInDb;
-// }
+export function deleteExercise(id) {
+  return http.delete(backend + "exercise/" + id);
+}

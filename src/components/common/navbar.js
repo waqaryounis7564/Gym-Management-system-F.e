@@ -64,6 +64,15 @@ class NavBar extends Component {
                 <NavDropdown.Item>
                   <NavLink to="/exercise">Exercises</NavLink>
                 </NavDropdown.Item>
+                <NavDropdown.Item>
+                  <NavLink to="/equipment">Equipments</NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                  <NavLink to="/physical">Physical Records</NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                  <NavLink to="/report">Reports</NavLink>
+                </NavDropdown.Item>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
