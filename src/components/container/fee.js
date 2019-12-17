@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { MDBBtn } from "mdbreact";
 import { Link } from "react-router-dom";
 import FeeTable from "../common/feeTable";
-import { getFees, deleteFee, getFee } from "../../service/feeService";
+import { getFees, deleteFee } from "../../service/feeService";
 
 class Fee extends Component {
   state = {

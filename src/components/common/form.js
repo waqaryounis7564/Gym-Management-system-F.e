@@ -25,6 +25,7 @@ class FormRegistration extends Form {
       gender: "",
       age: "",
       cnic: "",
+      monthlyFee: "",
       dateOfJoining: ""
     },
     errors: {},
@@ -72,6 +73,7 @@ class FormRegistration extends Form {
       cnic: user.cnic,
       gender: user.gender,
       age: user.age,
+      monthlyFee: user.monthlyFee,
       dateOfJoining: user.dateOfJoining
     };
   };
@@ -142,6 +144,18 @@ class FormRegistration extends Form {
                     error="wrong"
                     success="right"
                     value={this.state.data.mobile}
+                    onChange={this.onChange}
+                  />
+                  <MDBInput
+                    name="monthlyFee"
+                    label="Monthly Fee"
+                    icon="hand-holding-usd"
+                    group
+                    type="text"
+                    validate
+                    error="wrong"
+                    success="right"
+                    value={this.state.data.monthlyFee}
                     onChange={this.onChange}
                   />
 

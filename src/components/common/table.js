@@ -2,6 +2,7 @@ import React from "react";
 import Button from "./button";
 
 import { Link } from "react-router-dom";
+import ModalPage from "./fluidModal";
 
 const Table = ({ members, handleDelete }) => {
   return (
@@ -15,6 +16,7 @@ const Table = ({ members, handleDelete }) => {
             <th scope="col">Gender</th>
             <th scope="col">Age</th>
             <th scope="col">CNIC</th>
+            <th scope="col">Monthly Fee</th>
             <th scope="col">Joining Date</th>
             <th scope="col"></th>
           </tr>
@@ -38,6 +40,7 @@ const Table = ({ members, handleDelete }) => {
                 <td>{member.gender}</td>
                 <td>{member.age}</td>
                 <td>{member.cnic}</td>
+                <td>{member.monthlyFee}</td>
                 <td>{member.dateOfJoining}</td>
                 <td>
                   <Button delete={() => handleDelete(member._id)} />

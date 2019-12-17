@@ -1,5 +1,9 @@
 import React, { Component } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import Form from "./reForm";
+import Joi from "joi-browser";
+import Attendance from "./attendance";
+
 import {
   MDBContainer,
   MDBRow,
@@ -20,22 +24,30 @@ import { getMembers } from "../../service/memberService";
 class RegisterFee extends Form {
   state = {
     data: {
-      feeMonth: "",
-      feeAmount: "",
-      feeDue: "",
-      advancedFee: "",
       member_id: "",
+      feeMonth: "",
+      amountPaid: "",
+      // feeDue: "",
+      advancedFee: "",
       feeStatus: ""
+      //totalAmount: ""
     },
     errors: {},
     fees: [],
     members: [],
     startDate: new Date(),
-    radio: "",
-    status: [
-      { name: "paid", value: true },
-      { name: "unpaid", value: false }
-    ]
+    radio: ""
+  };
+  schema = {
+    member_id: Joi.required().label("Member"),
+    feeMonth: Joi.required().label("Date"),
+    amountPaid: Joi.number()
+      .required()
+      .label("Amount Paid"),
+    advancedFee: Joi.number()
+      .required()
+      .label("Advanced Fee"),
+    feeStatus: Joi.required().label("Fee Status")
   };
 
   feeHandler = nr => e => {
@@ -53,17 +65,18 @@ class RegisterFee extends Form {
     });
   };
 
-  handleChange = e => {
-    e.preventDefault();
-    const data = { ...this.state.data };
+  // handleChange = e => {
+  //   e.preventDefault();
+  //   const data = { ...this.state.data };
 
-    data[e.currentTarget.name] = e.currentTarget.value;
+  //   data[e.currentTarget.name] = e.currentTarget.value;
 
-    this.setState({ data });
-  };
+  //   this.setState({ data });
+  // };
 
   async componentDidMount() {
     const { data: fees } = await getFees();
+    // fees.forEach(feeMember => console.log("forEach", feeMember.member._id));
     this.setState({ fees });
     const { data: members } = await getMembers();
     this.setState({ members });
@@ -77,60 +90,72 @@ class RegisterFee extends Form {
   handleSubmit = async () => {
     console.log("clicked");
     console.log(this.state.data);
-    await saveFee(this.state.data);
-    this.props.history.push("/fee");
+    try {
+      await saveFee(this.state.data);
+      this.props.history.push("/fee");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 409) {
+        toast.error("member already exist");
+        //this.props.history.push("/fee");
+      } else if (ex.response && ex.response.status === 400) {
+        toast.warn(ex.response.data);
+      }
+    }
   };
   mapToViewModel = result => {
     return {
       _id: result._id,
       member_id: result.member._id,
       name: result.member.name,
-      feeMonth: result.mobile,
-      feeAmount: result.cnic,
-      feeDue: result.gender,
-      advancedFee: result.age,
-      feeStatus: result.feeStatus
+      feeMonth: result.feeMonth,
+      amountPaid: result.amountPaid,
+      feeDue: result.feeDue,
+      advancedFee: result.advancedFee,
+      feeStatus: result.feeStatus,
+      monthlyFee: result.member.monthlyFee,
+      totalAmount: result.totalAmount
     };
   };
   render() {
     return (
       <React.Fragment>
+        <ToastContainer></ToastContainer>
+        <Attendance></Attendance>
         <MDBContainer>
           <MDBRow>
             <MDBCol md="6">
               <form>
                 <p className="h5 text-center mb-4">Fee</p>
                 <div className="grey-text">
-                  {this.renderSelect(
-                    "member_id",
-                    "Members",
-                    this.state.members
+                  {this.props.match.params.id === "new" &&
+                    this.renderSelect(
+                      "member_id",
+                      "Members",
+                      this.state.members
+                    )}
+                  {this.state.errors.member_id && (
+                    <div className="alert alert-danger">
+                      {this.state.errors.member_id}
+                    </div>
+                  )}
+                  <MDBInput
+                    name="amountPaid"
+                    label="Amount Paid"
+                    icon="money-bill-alt"
+                    group
+                    type="text"
+                    validate
+                    error="wrong"
+                    success="right"
+                    value={this.state.data.amountPaid}
+                    onChange={this.handleChange}
+                  />
+                  {this.state.errors.amountPaid && (
+                    <div className="alert alert-danger">
+                      {this.state.errors.amountPaid}
+                    </div>
                   )}
 
-                  <MDBInput
-                    name="feeAmount"
-                    label="Fee Amount"
-                    icon="money-bill-alt"
-                    group
-                    type="text"
-                    validate
-                    error="wrong"
-                    success="right"
-                    value={this.state.data.feeAmount}
-                    onChange={this.handleChange}
-                  />
-                  <MDBInput
-                    name="feeDue"
-                    label="Fee Due"
-                    icon="money-bill-alt"
-                    group
-                    type="text"
-                    validate
-                    error="wrong"
-                    success="right"
-                    value={this.state.data.feeDue}
-                    onChange={this.handleChange}
-                  />
                   <MDBInput
                     name="advancedFee"
                     label="Advanced Fee"
@@ -143,6 +168,11 @@ class RegisterFee extends Form {
                     value={this.state.data.advancedFee}
                     onChange={this.handleChange}
                   />
+                  {this.state.errors.advancedFee && (
+                    <div className="alert alert-danger">
+                      {this.state.errors.advancedFee}
+                    </div>
+                  )}
 
                   <label>Fee Status</label>
 
@@ -170,16 +200,19 @@ class RegisterFee extends Form {
                       checked={this.state.radio === 2 ? true : false}
                     />
                   </MDBFormInline>
-
                   <MDBBadge color="secondary">Fee Date</MDBBadge>
                   <br />
-
                   <DatePicker
                     selected={this.state.startDate}
                     onChange={this.dateHandler}
                     name="feeMonth"
                     dateFormat="MMMM d , yyyy "
                   />
+                  {this.state.errors.feeMonth && (
+                    <div className="alert alert-danger">
+                      {this.state.errors.feeMonth}
+                    </div>
+                  )}
                 </div>
                 <div className="text-center">
                   <MDBBtn color="primary" onClick={this.handleSubmit}>
@@ -196,3 +229,29 @@ class RegisterFee extends Form {
 }
 
 export default RegisterFee;
+
+// <MDBInput
+// name="totalAmount"
+// label="Total Amount"
+// icon="money-bill-alt"
+// group
+// type="text"
+// validate
+// error="wrong"
+// success="right"
+// value={this.state.data.totalAmount}
+// onChange={this.handleChange}
+// />
+
+// <MDBInput
+// name="feeDue"
+// label="Amount Due"
+// icon="money-bill-alt"
+// group
+// type="text"
+// validate
+// error="wrong"
+// success="right"
+// value={this.state.data.feeDue}
+// onChange={this.handleChange}
+// />
