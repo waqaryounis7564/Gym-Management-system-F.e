@@ -20,63 +20,68 @@ class NavBar extends Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar collapseOnSelect expand="lg" bg="info" variant="dark">
-          <Navbar.Brand>
-            <Link style={{ color: "black" }} to="/dashboard">
-              Dashboard
-            </Link>
-          </Navbar.Brand>
-          {this.state.user && (
+        {this.state.user && (
+          <Navbar collapseOnSelect expand="lg" bg="info" variant="dark">
             <Navbar.Brand>
-              <Icon name="user"></Icon>
               <Link style={{ color: "black" }} to="/dashboard">
-                {this.state.user.name}
+                Dashboard
               </Link>
             </Navbar.Brand>
-          )}
+            {this.state.user && (
+              <Navbar.Brand>
+                <Icon name="user"></Icon>
+                <Link style={{ color: "black" }} to="/dashboard">
+                  {this.state.user.name}
+                </Link>
+              </Navbar.Brand>
+            )}
 
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link>
-                <NavLink to="/member">Members</NavLink>
-              </Nav.Link>
-              <Nav.Link>
-                <NavLink to="/trainer">Trainers</NavLink>
-              </Nav.Link>
-              <NavDropdown title="more" id="collasible-nav-dropdown">
-                {!this.state.user && (
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="mr-auto">
+                <Nav.Link>
+                  <NavLink to="/member">Members</NavLink>
+                </Nav.Link>
+                <Nav.Link>
+                  <NavLink to="/trainer">Trainers</NavLink>
+                </Nav.Link>
+                <Nav.Link>
+                  <NavLink to="/attendance">Attendance</NavLink>
+                </Nav.Link>
+                <NavDropdown title="more" id="collasible-nav-dropdown">
+                  {!this.state.user && (
+                    <NavDropdown.Item>
+                      <NavLink to="/login">Login</NavLink>
+                    </NavDropdown.Item>
+                  )}
+                  {this.state.user && (
+                    <NavDropdown.Item>
+                      <NavLink to="/logout">Logout</NavLink>
+                    </NavDropdown.Item>
+                  )}
                   <NavDropdown.Item>
-                    <NavLink to="/login">Login</NavLink>
+                    <NavLink to="/salary">Salary</NavLink>
                   </NavDropdown.Item>
-                )}
-                {this.state.user && (
                   <NavDropdown.Item>
-                    <NavLink to="/logout">Logout</NavLink>
+                    <NavLink to="/fee">Fee</NavLink>
                   </NavDropdown.Item>
-                )}
-                <NavDropdown.Item>
-                  <NavLink to="/salary">Salary</NavLink>
-                </NavDropdown.Item>
-                <NavDropdown.Item>
-                  <NavLink to="/fee">Fee</NavLink>
-                </NavDropdown.Item>
-                <NavDropdown.Item>
-                  <NavLink to="/exercise">Exercises</NavLink>
-                </NavDropdown.Item>
-                <NavDropdown.Item>
-                  <NavLink to="/equipment">Equipments</NavLink>
-                </NavDropdown.Item>
-                <NavDropdown.Item>
-                  <NavLink to="/physical">Physical Records</NavLink>
-                </NavDropdown.Item>
-                <NavDropdown.Item>
-                  <NavLink to="/report">Reports</NavLink>
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
+                  <NavDropdown.Item>
+                    <NavLink to="/exercise">Exercises</NavLink>
+                  </NavDropdown.Item>
+                  <NavDropdown.Item>
+                    <NavLink to="/equipment">Equipments</NavLink>
+                  </NavDropdown.Item>
+                  <NavDropdown.Item>
+                    <NavLink to="/physical">Physical Records</NavLink>
+                  </NavDropdown.Item>
+                  <NavDropdown.Item>
+                    <NavLink to="/report">Reports</NavLink>
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
+        )}
       </React.Fragment>
     );
   }

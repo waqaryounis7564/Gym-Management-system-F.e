@@ -41,7 +41,7 @@ class Login extends reForm {
       console.log(user);
       const token = headers["x-auth-token"];
       localStorage.setItem("jwt", token);
-      window.location = "/";
+      window.location = "/dashboard";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         toast.error("Invalid UserName or Password");

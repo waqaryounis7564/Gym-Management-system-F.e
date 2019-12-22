@@ -1,49 +1,36 @@
 import React, { Component } from "react";
-// import { Link } from "react-router-dom";
-// import Table from "../common/pRecordsTable";
-// import BtnR from "../common/buttonR";
-// import {
-//   getPhysicalRecords,
-//   deletePhysicalRecord
-// } from "../../service/recordService";
+import { Card } from "semantic-ui-react";
+
+import { getReports } from "../../service/reportService";
 
 class Reports extends Component {
-  state = { records: [] };
-  //   async componentDidMount() {
-  //     const { data: records } = await getPhysicalRecords();
-  //     this.setState({ records });
-  //   }
-  //   handleDelete = async id => {
-  //     const originalState = this.state.records;
-  //     const physicalRecord = this.state.records.filter(
-  //       physicalRecord => physicalRecord._id !== id
-  //     );
-  //     this.setState({ records: physicalRecord });
+  state = {
+    items: []
+  };
+  async componentDidMount() {
+    let items = [];
+    const { data: records } = await getReports();
+    let keys = Object.keys(records);
 
-  //     try {
-  //       const { data: physicalRecord } = await deletePhysicalRecord(id);
-  //     } catch (ex) {
-  //       if (ex.response && ex.response.status < 500)
-  //         console.log("record already deleted");
-  //       this.setState({ records: originalState });
-  //     }
-  //   };
+    for (let i = 1; i < 11; i++) {
+      items.push({
+        header: keys[i],
+        description: records[keys[i]]
+      });
+    }
+    this.setState({ items });
+  }
+
   render() {
     return (
-      <div>
+      <React.Fragment>
         <h1>Reports</h1>
-      </div>
+        <div className="container">
+          <Card.Group itemsPerRow={4} color="red" items={this.state.items} />
+        </div>
+      </React.Fragment>
     );
   }
 }
 
 export default Reports;
-
-// <Link to="/registerphysicalRecord/new">
-//   <BtnR name="Enter new physicalRecord"></BtnR>
-// </Link>
-
-// <Table
-//   records={this.state.records}
-//   handleDelete={this.handleDelete}
-// ></Table>

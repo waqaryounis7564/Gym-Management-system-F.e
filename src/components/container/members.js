@@ -30,24 +30,8 @@ class Member extends Component {
   async componentDidMount() {
     const { data: members } = await getMembers();
     this.setState({ members });
-    // console.log("members are", members);
-    // const memberId = this.props.match.params.id;
-    // if (memberId === "new") return;
-    // const member = await getMember(memberId);
-    // memberId && console.log(member.exercisesAssigned._id);
-    // this.setState({ data: this.mapToViewModel(member) });
   }
-  // mapToViewModel = member => {
-  //   return {
-  //     _id: member._id,
-  //     name: member.name,
-  //     mobile: member.mobile,
-  //     gender: member.gender,
-  //     cnic: member.cnic,
-  //     dateOfJoining: member.dateOfJoining,
-  //     exerciseId: member.exercisesAssigned._id
-  //   };
-  // };
+
   doSubmit = async () => {
     await saveMember(this.state.data);
 

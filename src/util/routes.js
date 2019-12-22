@@ -25,13 +25,18 @@ import RegisterFee from "../components/common/registerFee";
 import RegisterSalary from "../components/common/registerSalary";
 import RegisterEquipment from "../components/common/registerEquipment";
 import RegisterRecords from "../components/common/registerPhysical";
+import CheckIn from "../components/common/checkIn";
+import CheckOut from "../components/common/checkout";
+import Attendance from "../components/common/attendance";
 
 const Routes = () => {
   return (
     <Switch>
-      <Route exact path="/dashboard" component={Dashboard}></Route>
-      <Route path="/login" component={Login}></Route>
+      <Route path="/dashboard" component={Dashboard}></Route>
       <Route path="/logout" component={Logout}></Route>
+      <Route path="/attendance" component={Attendance}></Route>
+      <Route path="/checkIn/new" component={CheckIn}></Route>
+      <Route path="/checkOut/:id?" component={CheckOut}></Route>
       <Route path="/equipment" component={Equipment}></Route>
       <Route path="/createequipment/:id?" component={RegisterEquipment}></Route>
       <Route path="/exercise" component={Exercise}></Route>
@@ -53,6 +58,7 @@ const Routes = () => {
       <Route path="/exercisecard" component={ExerciseCard}></Route>
       <Route path="/carddetails" component={CardDetails}></Route>
       <Route path="/createexercise/:id?" component={CreateExercise}></Route>
+      <Route exact path="/" component={Login}></Route>
     </Switch>
   );
 };

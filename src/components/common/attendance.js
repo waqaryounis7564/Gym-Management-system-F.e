@@ -1,48 +1,59 @@
-// import React, { Component } from "react";
-// import { MDBBtn } from "mdbreact";
-// import moment from "moment";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { MDBBtn } from "mdbreact";
+import {
+  getAttendances,
+  deleteAttendance
+} from "../../service/attendanceService";
 
-// class Attendance extends Component {
-//   state = {
-//     checkOut: 0,
-//     total: 0
-//   };
-//   handleCheckIn = () => {
-//     let time = moment().locale("en");
-//     // let t0 = time.getHours();
-//     this.setState({ checkIn: time });
-//     console.log("state", this.state.checkIn);
-//     // console.log("state", this.state.checkIn);
-//     //console.log("hour", t0);
-//   };
-//   handleCheckOut = () => {
-//     let time = new Date();
-//     let t1 = time.getSeconds();
-//     this.setState({ checkOut: t1 });
-//     console.log(this.state.checkOut);
-//   };
-//   handleTotal = () => {
-//     let { checkIn, checkOut } = this.state;
-//     let total = checkOut - checkIn;
-//     this.setState({ total });
-//     console.log(this.state.total);
-//   };
-//   render() {
-//     return (
-//       <React.Fragment>
-//         <MDBBtn onClick={this.handleCheckIn} outline color="primary" size="sm">
-//           CheckIn
-//         </MDBBtn>
+import { ToastContainer, toast } from "react-toastify";
 
-//         <MDBBtn onClick={this.handleCheckOut} outline color="danger" size="sm">
-//           CheckOut
-//         </MDBBtn>
-//         <MDBBtn onClick={this.handleTotal} outline color="primary" size="sm">
-//           Total
-//         </MDBBtn>
-//       </React.Fragment>
-//     );
-//   }
-// }
+import Table from "../common/attendanceTable";
 
-// export default Attendance;
+class attendance extends Component {
+  state = {
+    attendances: [],
+
+    errors: {}
+  };
+
+  async componentDidMount() {
+    const { data: attendances } = await getAttendances();
+    this.setState({ attendances });
+  }
+
+  handleDelete = async id => {
+    const originalState = this.state.attendances;
+    const attendance = this.state.attendances.filter(
+      attendance => attendance._id !== id
+    );
+    this.setState({ attendances: attendance });
+
+    try {
+      await deleteAttendance(id);
+    } catch (ex) {
+      if (ex.response && ex.response.status < 500)
+        toast("Attendance already deleted");
+      this.setState({ attendances: originalState });
+    }
+  };
+  render() {
+    const { attendances } = this.state;
+
+    return (
+      <div>
+        <ToastContainer></ToastContainer>
+        <h1>Attendances</h1>
+        <Link to="/checkIn/new">
+          <MDBBtn gradient="purple">Time Logging</MDBBtn>
+        </Link>
+        <Table
+          attendances={attendances}
+          handleDelete={this.handleDelete}
+        ></Table>
+      </div>
+    );
+  }
+}
+
+export default attendance;

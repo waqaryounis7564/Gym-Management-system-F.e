@@ -47,20 +47,20 @@ class SignUpForm extends Form {
   };
 
   doSubmit = async () => {
-    try {
-      const { data: admin } = await signUp(this.state.data);
-
-      console.log("clicked");
-      console.log(admin);
-    } catch (ex) {
-      if (ex.response && ex.response.status === 400) {
-        const errors = { ...this.state.errors };
-        errors.email = ex.response.data;
-        errors.name = ex.response.data;
-        this.setState({ errors });
-        toast.warning("user already exist with same id");
-      }
-    }
+    const { data: admin } = await signUp(this.state.data);
+    this.props.history.push("/");
+    console.log(admin);
+    // try {
+    //   console.log("clicked");
+    // } catch (ex) {
+    //   if (ex.response && ex.response.status === 400) {
+    //     const errors = { ...this.state.errors };
+    //     errors.email = ex.response.data;
+    //     errors.name = ex.response.data;
+    //     this.setState({ errors });
+    //     toast.warning("user already exist with same id");
+    //   }
+    // }
   };
   render() {
     return (
