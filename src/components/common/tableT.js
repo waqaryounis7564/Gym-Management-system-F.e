@@ -10,7 +10,8 @@ const Table = ({ trainers, handleDelete }) => {
         <thead className="thead-dark">
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
+            <th scope="col">Trainer Name</th>
+            <th scope="col">Member Assigned</th>
             <th scope="col">Mobile</th>
             <th scope="col">Gender</th>
             <th scope="col">Age</th>
@@ -34,6 +35,7 @@ const Table = ({ trainers, handleDelete }) => {
                     {trainer.name}
                   </Link>
                 </td>
+                <td>{trainer.memberAssigned.name}</td>
                 <td>{trainer.mobile}</td>
                 <td>{trainer.gender}</td>
                 <td>{trainer.age}</td>

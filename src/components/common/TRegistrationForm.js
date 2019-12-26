@@ -1,5 +1,5 @@
 import React from "react";
-
+import { InputLabel, MenuItem, Select, FormControl } from "@material-ui/core";
 import { getTrainer, saveTrainer } from "../../service/trainerService";
 import { getMembers } from "../../service/memberService";
 
@@ -26,25 +26,36 @@ class FormRegistration extends Form {
       age: "",
       cnic: "",
       dateOfJoining: "",
-      assignedMember_id: ""
+      assignedMember_id: "",
+      memberName: ""
     },
     errors: {},
     members: [],
-    startDate: new Date(),
-    radio: ""
+    startDate: new Date("this.state.data.dateOfJoining")
   };
-  genderHandler = nr => e => {
-    this.state.data.gender = e.currentTarget.name;
+  handleGender = gender => {
+    const data = { ...this.state.data };
+    data.gender = gender;
+
     this.setState({
-      radio: nr
+      data
     });
+    console.log(data);
   };
 
   dateHandler = date => {
-    this.state.data.dateOfJoining = date.toLocaleDateString("en-US");
+    const data = { ...this.state.data };
+    let time = date.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+    data.dateOfJoining = time;
+    console.log(time);
 
     this.setState({
-      startDate: date
+      startDate: date,
+      data
     });
   };
   onChange = e => {
@@ -53,6 +64,21 @@ class FormRegistration extends Form {
     data[e.currentTarget.name] = e.currentTarget.value;
 
     this.setState({ data });
+  };
+  handleChange = id => {
+    const data = { ...this.state.data };
+    data.assignedMember_id = id[0];
+    data.memberName = id[1];
+    console.log(id[0]);
+    this.setState({ data });
+    console.log(id[1]);
+  };
+  options = () => {
+    const { members } = this.state;
+    const MenuItems = members.map(member => (
+      <MenuItem value={[member._id, member.name]}>{member.name}</MenuItem>
+    ));
+    return MenuItems;
   };
   async componentDidMount() {
     const { data: members } = await getMembers();
@@ -73,7 +99,8 @@ class FormRegistration extends Form {
       cnic: user.cnic,
       gender: user.gender,
       age: user.age,
-      dateOfJoining: user.dateOfJoining
+      dateOfJoining: user.dateOfJoining,
+      memberName: user.memberAssigned.name
     };
   };
 
@@ -142,43 +169,52 @@ class FormRegistration extends Form {
                     onChange={this.onChange}
                   />
 
-                  {this.renderSelect(
-                    "assignedMember_id",
-                    "Members",
-                    this.state.members
-                  )}
+                  <div className="form-group">
+                    <InputLabel id="demo-simple-select-label">
+                      Members
+                    </InputLabel>
+                    <Select
+                      className="form-control"
+                      autoWidth={true}
+                      displayEmpty={true}
+                      renderValue={() => this.state.data.memberName}
+                      name="assignedMember_id"
+                      label="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={this.state.data.assignedMember_id}
+                      onChange={({ target }) => this.handleChange(target.value)}
+                    >
+                      <MenuItem value={""}>None</MenuItem>
+                      {this.options()}
+                    </Select>
+                  </div>
 
-                  <MDBFormInline>
-                    <MDBInput
-                      label="Male"
-                      name="Male"
-                      icon="male"
-                      group
-                      type="radio"
-                      id="radio1"
-                      containerClass="mr-5"
-                      onClick={this.genderHandler(1)}
-                      checked={this.state.radio === 1 ? true : false}
-                    />
-                    <MDBInput
-                      icon="female"
-                      label="Female"
-                      name="Female"
-                      group
-                      type="radio"
-                      id="radio2"
-                      containerClass="mr-5"
-                      onClick={this.genderHandler(2)}
-                      checked={this.state.radio === 2 ? true : false}
-                    />
-                  </MDBFormInline>
+                  <InputLabel id="simple-select-label">Gender</InputLabel>
+                  <Select
+                    className="form-control"
+                    autoWidth={true}
+                    displayEmpty={true}
+                    renderValue={() => this.state.data.gender}
+                    name="gender"
+                    label="simple-select-label"
+                    id="simple-select"
+                    value={this.state.data.gender}
+                    onChange={({ target }) => this.handleGender(target.value)}
+                  >
+                    <MenuItem value={""}>None</MenuItem>
+                    <MenuItem value={"male"}>Male</MenuItem>
+                    <MenuItem value={"female"}>Female</MenuItem>
+                  </Select>
+
+                  <br />
+                  <br />
 
                   <MDBBadge color="secondary">Joining Date</MDBBadge>
                   <br />
 
                   <DatePicker
                     selected={this.state.startDate}
-                    onChange={this.dateHandler}
+                    onChange={date => this.dateHandler(date)}
                     name="dateOfJoining"
                     dateFormat="MMMM d, yyyy "
                   />
@@ -198,3 +234,28 @@ class FormRegistration extends Form {
 }
 
 export default FormRegistration;
+
+// <MDBFormInline>
+// <MDBInput
+//   label="Male"
+//   name="Male"
+//   icon="male"
+//   group
+//   type="radio"
+//   id="radio1"
+//   containerClass="mr-5"
+//   onClick={this.genderHandler(1)}
+//   checked={this.state.radio === 1 ? true : false}
+// />
+// <MDBInput
+//   icon="female"
+//   label="Female"
+//   name="Female"
+//   group
+//   type="radio"
+//   id="radio2"
+//   containerClass="mr-5"
+//   onClick={this.genderHandler(2)}
+//   checked={this.state.radio === 2 ? true : false}
+// />
+// </MDBFormInline>

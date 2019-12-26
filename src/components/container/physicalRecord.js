@@ -30,7 +30,7 @@ class PhysicalRecord extends Component {
   };
   render() {
     return (
-      <div>
+      <React.Fragment>
         <h1>PhysicalRecord</h1>
         <Link to="/registerphysical/new">
           <BtnR name="Enter new physicalRecord"></BtnR>
@@ -40,7 +40,7 @@ class PhysicalRecord extends Component {
           records={this.state.records}
           handleDelete={this.handleDelete}
         ></Table>
-      </div>
+      </React.Fragment>
     );
   }
 }

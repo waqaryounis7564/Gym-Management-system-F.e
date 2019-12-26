@@ -30,6 +30,7 @@ class CheckIn extends Form {
   };
 
   dateHandler = date => {
+    const data = { ...this.state.data };
     let time = date.toLocaleDateString("en-US", {
       day: "numeric",
       month: "long",
@@ -37,11 +38,12 @@ class CheckIn extends Form {
       minute: "2-digit"
     });
 
+    data.checkIn = time;
     this.setState({
-      startDate: date
+      startDate: date,
+      data
     });
-    // this.state.data.setState({ checkIn: time });
-    this.state.data.checkIn = time;
+
     console.log(this.state.data.checkIn);
   };
 

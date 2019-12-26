@@ -47,6 +47,7 @@ class FormRegistration extends Form {
       startDate: date
     });
   };
+
   onChange = e => {
     const data = { ...this.state.data };
 

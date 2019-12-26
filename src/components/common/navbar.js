@@ -23,14 +23,14 @@ class NavBar extends Component {
         {this.state.user && (
           <Navbar collapseOnSelect expand="lg" bg="info" variant="dark">
             <Navbar.Brand>
-              <Link style={{ color: "black" }} to="/dashboard">
+              <Link style={{ color: "white" }} to="/dashboard">
                 Dashboard
               </Link>
             </Navbar.Brand>
             {this.state.user && (
               <Navbar.Brand>
                 <Icon name="user"></Icon>
-                <Link style={{ color: "black" }} to="/dashboard">
+                <Link style={{ color: "white" }} to="/dashboard">
                   {this.state.user.name}
                 </Link>
               </Navbar.Brand>
@@ -40,13 +40,19 @@ class NavBar extends Component {
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="mr-auto">
                 <Nav.Link>
-                  <NavLink to="/member">Members</NavLink>
+                  <NavLink style={{ color: "white" }} to="/member">
+                    Members
+                  </NavLink>
                 </Nav.Link>
                 <Nav.Link>
-                  <NavLink to="/trainer">Trainers</NavLink>
+                  <NavLink style={{ color: "white" }} to="/trainer">
+                    Trainers
+                  </NavLink>
                 </Nav.Link>
                 <Nav.Link>
-                  <NavLink to="/attendance">Attendance</NavLink>
+                  <NavLink style={{ color: "white" }} to="/attendance">
+                    Attendance
+                  </NavLink>
                 </Nav.Link>
                 <NavDropdown title="more" id="collasible-nav-dropdown">
                   {!this.state.user && (

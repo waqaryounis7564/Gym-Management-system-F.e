@@ -19,6 +19,7 @@ import {
 import "react-datepicker/dist/react-datepicker.css";
 import { getMembers } from "../../service/memberService";
 import { getExercises } from "../../service/exerciseService";
+import { ToastContainer, toast } from "react-toastify";
 
 class RegisterRecords extends form {
   state = {
@@ -37,7 +38,6 @@ class RegisterRecords extends form {
       shoulders: ""
     },
     errors: {},
-    records: [],
     members: [],
     exercises: [],
     startDate: new Date()
@@ -88,26 +88,36 @@ class RegisterRecords extends form {
   };
 
   doSubmit = async () => {
-    console.log("clicked");
-    console.log(this.state.data);
-    await savePhysicalRecord(this.state.data);
-    this.props.history.push("/physical");
+    try {
+      console.log("clicked");
+      console.log(this.state.data);
+      await savePhysicalRecord(this.state.data);
+      this.props.history.push("/physical");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 409) {
+        toast.error("Record has already registered ");
+      } else if (ex.response && ex.response.status === 400) {
+        toast.warn(ex.response.data);
+      }
+    }
   };
 
   render() {
     return (
       <React.Fragment>
+        <ToastContainer></ToastContainer>
         <MDBContainer>
           <MDBRow>
             <MDBCol md="6">
               <form>
                 <p className="h5 text-center mb-4">User</p>
                 <div className="grey-text">
-                  {this.renderSelect(
-                    "member_id",
-                    "Members",
-                    this.state.members
-                  )}
+                  {this.props.match.params.id === "new" &&
+                    this.renderSelect(
+                      "member_id",
+                      "Members",
+                      this.state.members
+                    )}
                   {this.renderSelect(
                     "exercise_id",
                     "Exercises",

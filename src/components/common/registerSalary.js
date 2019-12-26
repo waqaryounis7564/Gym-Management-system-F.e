@@ -19,6 +19,7 @@ import {
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { ToastContainer, toast } from "react-toastify";
 
 import { getTrainers } from "../../service/trainerService";
 
@@ -77,16 +78,24 @@ class RegisterSalary extends Form {
     console.log(salary);
   }
   handleSubmit = async () => {
-    console.log("clicked");
-    console.log(this.state.data);
-    await saveSalary(this.state.data);
-    this.props.history.push("/salary");
+    try {
+      console.log("clicked");
+      console.log(this.state.data);
+      await saveSalary(this.state.data);
+      this.props.history.push("/salary");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 409) {
+        toast.error("Trainer already exist");
+      } else if (ex.response && ex.response.status === 400) {
+        toast.warn(ex.response.data);
+      }
+    }
   };
   mapToViewModel = result => {
     return {
       _id: result._id,
       trainer_id: result.trainer._id,
-      name: result.trainer.name,
+      //name: result.trainer.name,
       salaryMonth: result.salaryMonth,
       salaryAmount: result.salaryAmount,
       salaryDue: result.salaryDue,
@@ -97,17 +106,19 @@ class RegisterSalary extends Form {
   render() {
     return (
       <React.Fragment>
+        <ToastContainer></ToastContainer>
         <MDBContainer>
           <MDBRow>
             <MDBCol md="6">
               <form>
                 <p className="h5 text-center mb-4">salary</p>
                 <div className="grey-text">
-                  {this.renderSelect(
-                    "trainer_id",
-                    "trainers",
-                    this.state.trainers
-                  )}
+                  {this.props.match.params.id === "new" &&
+                    this.renderSelect(
+                      "trainer_id",
+                      "trainers",
+                      this.state.trainers
+                    )}
 
                   <MDBInput
                     name="salaryAmount"
@@ -142,7 +153,7 @@ class RegisterSalary extends Form {
                     validate
                     error="wrong"
                     success="right"
-                    value={this.state.data.advancedsalary}
+                    value={this.state.data.advancedSalary}
                     onChange={this.handleChange}
                   />
                   <label>Salary Status</label>

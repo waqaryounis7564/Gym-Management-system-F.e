@@ -27,10 +27,9 @@ class RegisterFee extends Form {
       member_id: "",
       feeMonth: "",
       amountPaid: "",
-      // feeDue: "",
+
       advancedFee: "",
       feeStatus: ""
-      //totalAmount: ""
     },
     errors: {},
     fees: [],
@@ -106,7 +105,7 @@ class RegisterFee extends Form {
     return {
       _id: result._id,
       member_id: result.member._id,
-      name: result.member.name,
+      //name: result.member.name,
       feeMonth: result.feeMonth,
       amountPaid: result.amountPaid,
       feeDue: result.feeDue,
@@ -120,7 +119,7 @@ class RegisterFee extends Form {
     return (
       <React.Fragment>
         <ToastContainer></ToastContainer>
-        <Attendance></Attendance>
+
         <MDBContainer>
           <MDBRow>
             <MDBCol md="6">

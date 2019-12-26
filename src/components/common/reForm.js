@@ -59,8 +59,8 @@ class Form extends Component {
         name={name}
         value={data[name]}
         label={label}
-        onChange={this.handleSelect}
         options={options}
+        onChange={this.handleSelect}
       />
     );
   }

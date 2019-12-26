@@ -12,7 +12,7 @@ class Reports extends Component {
     const { data: records } = await getReports();
     let keys = Object.keys(records);
 
-    for (let i = 1; i < 11; i++) {
+    for (let i = 1; i <= 11; i++) {
       items.push({
         header: keys[i],
         description: records[keys[i]]
