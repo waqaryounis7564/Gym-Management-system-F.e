@@ -64,8 +64,7 @@ class CheckIn extends Form {
       this.props.history.push("/attendance");
     } catch (ex) {
       if (ex.response && ex.response.status === 409) {
-        toast.error("member already exist");
-        //this.props.history.push("/attendance");
+        toast.error("already CheckedIn");
       } else if (ex.response && ex.response.status === 400) {
         toast.warn(ex.response.data);
       }

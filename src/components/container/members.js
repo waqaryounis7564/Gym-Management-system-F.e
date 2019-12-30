@@ -8,7 +8,7 @@ import {
 } from "../../service/memberService";
 
 import { ToastContainer, toast } from "react-toastify";
-
+import "./dashboard.css";
 import Table from "../common/table";
 
 class Member extends Component {
@@ -28,6 +28,7 @@ class Member extends Component {
   };
 
   async componentDidMount() {
+    document.body.id = "member";
     const { data: members } = await getMembers();
     this.setState({ members });
   }
@@ -54,7 +55,7 @@ class Member extends Component {
     const { members, exercises } = this.state;
 
     return (
-      <div>
+      <div className="gradient">
         <ToastContainer></ToastContainer>
         <h1>Members</h1>
         <Link to="/registerUser/new">

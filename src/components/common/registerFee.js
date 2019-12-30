@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Form from "./reForm";
 import Joi from "joi-browser";
 import Attendance from "./attendance";
+import { InputLabel, MenuItem, Select, FormControl } from "@material-ui/core";
 
 import {
   MDBContainer,
@@ -49,11 +50,14 @@ class RegisterFee extends Form {
     feeStatus: Joi.required().label("Fee Status")
   };
 
-  feeHandler = nr => e => {
-    this.state.data.feeStatus = e.currentTarget.name;
+  feeHandler = fee => {
+    const data = { ...this.state.data };
+    data.feeStatus = fee;
+
     this.setState({
-      radio: nr
+      data
     });
+    console.log(data);
   };
 
   dateHandler = date => {
@@ -173,32 +177,24 @@ class RegisterFee extends Form {
                     </div>
                   )}
 
-                  <label>Fee Status</label>
+                  <InputLabel id="simple-select-label">fee Status</InputLabel>
+                  <br />
+                  <Select
+                    autoWidth={true}
+                    displayEmpty={true}
+                    renderValue={() => this.state.data.feeStatus}
+                    name="feeStatus"
+                    label="simple-select-label"
+                    id="simple-select"
+                    value={this.state.data.feeStatus}
+                    onChange={({ target }) => this.feeHandler(target.value)}
+                  >
+                    <MenuItem value={"paid"}>paid</MenuItem>
+                    <MenuItem value={"unpaid"}>unpaid</MenuItem>
+                  </Select>
 
-                  <MDBFormInline>
-                    <MDBInput
-                      label="Paid"
-                      name="paid"
-                      icon="check"
-                      group
-                      type="radio"
-                      id="radio1"
-                      containerClass="mr-5"
-                      onClick={this.feeHandler(1)}
-                      checked={this.state.radio === 1 ? true : false}
-                    />
-                    <MDBInput
-                      icon="times"
-                      label="Unpaid"
-                      name="unpaid"
-                      group
-                      type="radio"
-                      id="radio2"
-                      containerClass="mr-5"
-                      onClick={this.feeHandler(2)}
-                      checked={this.state.radio === 2 ? true : false}
-                    />
-                  </MDBFormInline>
+                  <br />
+                  <br />
                   <MDBBadge color="secondary">Fee Date</MDBBadge>
                   <br />
                   <DatePicker

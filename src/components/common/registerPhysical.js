@@ -1,5 +1,6 @@
 import React from "react";
-
+import { Dropdown, Grid, Segment } from "semantic-ui-react";
+import { InputLabel, MenuItem, Select } from "@material-ui/core";
 import {
   getPhysicalRecord,
   savePhysicalRecord
@@ -43,6 +44,38 @@ class RegisterRecords extends form {
     startDate: new Date()
   };
 
+  handleChangeExercises = (e, { value }) => {
+    const data = { ...this.state.data };
+    data.exercise_id = value;
+    this.setState({ data });
+
+    console.log(value);
+  };
+  handleChangeMembers = (e, { value }) => {
+    const data = { ...this.state.data };
+    data.member_id = value;
+    this.setState({ data });
+
+    console.log(value);
+  };
+
+  optionsExercises = () => {
+    const { exercises } = this.state;
+    return exercises.map(exercise => ({
+      key: exercise.name,
+      text: exercise.name,
+      value: exercise._id
+    }));
+  };
+  optionsMembers = () => {
+    const { members } = this.state;
+    return members.map(member => ({
+      key: member.name,
+      text: member.name,
+      value: member._id
+    }));
+  };
+
   dateHandler = date => {
     this.state.data.month = date.toLocaleDateString("en-US");
 
@@ -74,7 +107,14 @@ class RegisterRecords extends form {
     return {
       _id: user._id,
       member_id: user.member._id,
-      exercise_id: user.exercise._id,
+      exercise_id: (function() {
+        let assigns = [];
+        for (let i = 0; i < user.exercises.length; i++) {
+          assigns.push(user.exercises[i]._id);
+        }
+        console.log("map to view array", assigns);
+        return assigns;
+      })(),
       month: user.month,
       height: user.height,
       weight: user.weight,
@@ -110,19 +150,48 @@ class RegisterRecords extends form {
           <MDBRow>
             <MDBCol md="6">
               <form>
-                <p className="h5 text-center mb-4">User</p>
+                <p className="h5 text-center mb-4">Physical Record</p>
                 <div className="grey-text">
-                  {this.props.match.params.id === "new" &&
-                    this.renderSelect(
-                      "member_id",
-                      "Members",
-                      this.state.members
+                  <div className="form-group">
+                    {this.props.match.params.id === "new" && (
+                      <div>
+                        <InputLabel id="demo-simple-select-label">
+                          Members
+                        </InputLabel>
+                        <Grid columns={2}>
+                          <Grid.Column>
+                            <Dropdown
+                              placeholder="Members"
+                              fluid
+                              name="member_id"
+                              selection
+                              onChange={this.handleChangeMembers}
+                              value={this.state.data.member_id}
+                              options={this.optionsMembers()}
+                            />
+                          </Grid.Column>
+                        </Grid>
+                      </div>
                     )}
-                  {this.renderSelect(
-                    "exercise_id",
-                    "Exercises",
-                    this.state.exercises
-                  )}
+
+                    <InputLabel id="demo-simple-select-label">
+                      Exercises
+                    </InputLabel>
+                    <br />
+                    <Grid columns={2}>
+                      <Grid.Column>
+                        <Dropdown
+                          placeholder="Exercises"
+                          fluid
+                          multiple
+                          selection
+                          onChange={this.handleChangeExercises}
+                          value={this.state.data.exercise_id}
+                          options={this.optionsExercises()}
+                        />
+                      </Grid.Column>
+                    </Grid>
+                  </div>
                   <MDBInput
                     name="height"
                     label="Your height"
@@ -219,10 +288,8 @@ class RegisterRecords extends form {
                     value={this.state.data.thigh}
                     onChange={this.onChange}
                   />
-
                   <MDBBadge color="secondary">Record Date</MDBBadge>
                   <br />
-
                   <DatePicker
                     selected={this.state.startDate}
                     onChange={this.dateHandler}

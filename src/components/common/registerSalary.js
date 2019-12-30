@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { InputLabel, MenuItem, Select, FormControl } from "@material-ui/core";
 import Form from "./reForm";
 import {
   MDBContainer,
@@ -33,18 +34,20 @@ class RegisterSalary extends Form {
       trainer_id: "",
       salaryStatus: ""
     },
-    errors: {},
+
     salaries: [],
     trainers: [],
-    startDate: new Date(),
-    radio: ""
+    startDate: new Date()
   };
 
-  salaryHandler = nr => e => {
-    this.state.data.salaryStatus = e.currentTarget.name;
+  salaryHandler = salary => {
+    const data = { ...this.state.data };
+    data.salaryStatus = salary;
+
     this.setState({
-      radio: nr
+      data
     });
+    console.log(data);
   };
 
   dateHandler = date => {
@@ -156,32 +159,27 @@ class RegisterSalary extends Form {
                     value={this.state.data.advancedSalary}
                     onChange={this.handleChange}
                   />
-                  <label>Salary Status</label>
 
-                  <MDBFormInline>
-                    <MDBInput
-                      label="Paid"
-                      name="paid"
-                      icon="check"
-                      group
-                      type="radio"
-                      id="radio1"
-                      containerClass="mr-5"
-                      onClick={this.salaryHandler(1)}
-                      checked={this.state.radio === 1 ? true : false}
-                    />
-                    <MDBInput
-                      icon="times"
-                      label="Unpaid"
-                      name="unpaid"
-                      group
-                      type="radio"
-                      id="radio2"
-                      containerClass="mr-5"
-                      onClick={this.salaryHandler(2)}
-                      checked={this.state.radio === 2 ? true : false}
-                    />
-                  </MDBFormInline>
+                  <InputLabel id="simple-select-label">
+                    Salary Status
+                  </InputLabel>
+                  <br />
+                  <Select
+                    autoWidth={true}
+                    displayEmpty={true}
+                    renderValue={() => this.state.data.salaryStatus}
+                    name="salaryStatus"
+                    label="simple-select-label"
+                    id="simple-select"
+                    value={this.state.data.salaryStatus}
+                    onChange={({ target }) => this.salaryHandler(target.value)}
+                  >
+                    <MenuItem value={"paid"}>paid</MenuItem>
+                    <MenuItem value={"unpaid"}>unpaid</MenuItem>
+                  </Select>
+
+                  <br />
+                  <br />
 
                   <MDBBadge color="secondary">salary Date</MDBBadge>
                   <br />

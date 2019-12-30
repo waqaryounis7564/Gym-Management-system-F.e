@@ -18,6 +18,7 @@ class attendance extends Component {
   };
 
   async componentDidMount() {
+    document.body.id = "attendance";
     const { data: attendances } = await getAttendances();
     this.setState({ attendances });
   }

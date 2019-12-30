@@ -33,7 +33,7 @@ class Exercise extends Component {
     try {
       await deleteExercise(id);
     } catch (ex) {
-      if (ex.response && ex.response.status < 500)
+      if (ex.response && ex.response.status === 400)
         toast("exercise already deleted");
       this.setState({ exercises: originalState });
     }
@@ -46,12 +46,11 @@ class Exercise extends Component {
         <Link to="/createexercise/new">
           <MDBBtn gradient="peach">Create New Exercise</MDBBtn>
         </Link>
-        <div className="container">
-          <Extable
-            exercises={this.state.exercises}
-            onDelete={this.handleDelete}
-          ></Extable>
-        </div>
+
+        <Extable
+          exercises={this.state.exercises}
+          onDelete={this.handleDelete}
+        ></Extable>
       </React.Fragment>
     );
   }

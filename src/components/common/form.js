@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import { getMember, saveMember } from "../../service/memberService";
 import { getExercises } from "../../service/exerciseService";
-
+import { InputLabel, MenuItem, Select, FormControl } from "@material-ui/core";
+import { ToastContainer, toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import Form from "./reForm";
 import {
@@ -33,11 +34,14 @@ class FormRegistration extends Form {
     startDate: new Date(),
     radio: ""
   };
-  genderHandler = nr => e => {
-    this.state.data.gender = e.currentTarget.name;
+  handleGender = gender => {
+    const data = { ...this.state.data };
+    data.gender = gender;
+
     this.setState({
-      radio: nr
+      data
     });
+    console.log(data);
   };
 
   dateHandler = date => {
@@ -80,10 +84,16 @@ class FormRegistration extends Form {
   };
 
   doSubmit = async () => {
-    console.log("clicked");
-    console.log(this.state.data);
-    await saveMember(this.state.data);
-    this.props.history.push("/member");
+    try {
+      console.log("clicked");
+      console.log(this.state.data);
+      await saveMember(this.state.data);
+      this.props.history.push("/member");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        toast.info(ex.response.data);
+      }
+    }
     //   // try {
     //   //   await saveMember(this.state.data);
     //   // } catch (ex) {
@@ -93,6 +103,7 @@ class FormRegistration extends Form {
   render() {
     return (
       <React.Fragment>
+        <ToastContainer></ToastContainer>
         <MDBContainer>
           <MDBRow>
             <MDBCol md="6">
@@ -160,31 +171,24 @@ class FormRegistration extends Form {
                     onChange={this.onChange}
                   />
 
-                  <MDBFormInline>
-                    <MDBInput
-                      label="Male"
-                      name="Male"
-                      icon="male"
-                      group
-                      type="radio"
-                      id="radio1"
-                      containerClass="mr-5"
-                      onClick={this.genderHandler(1)}
-                      checked={this.state.radio === 1 ? true : false}
-                    />
-                    <MDBInput
-                      icon="female"
-                      label="Female"
-                      name="Female"
-                      group
-                      type="radio"
-                      id="radio2"
-                      containerClass="mr-5"
-                      onClick={this.genderHandler(2)}
-                      checked={this.state.radio === 2 ? true : false}
-                    />
-                  </MDBFormInline>
-
+                  <InputLabel id="simple-select-label">Gender</InputLabel>
+                  <br />
+                  <Select
+                    autoWidth={true}
+                    displayEmpty={true}
+                    renderValue={() => this.state.data.gender}
+                    name="gender"
+                    label="simple-select-label"
+                    id="simple-select"
+                    value={this.state.data.gender}
+                    onChange={({ target }) => this.handleGender(target.value)}
+                  >
+                    <MenuItem value={" "}>None</MenuItem>
+                    <MenuItem value={"male"}>Male</MenuItem>
+                    <MenuItem value={"female"}>Female</MenuItem>
+                  </Select>
+                  <br />
+                  <br />
                   <MDBBadge color="secondary">Joining Date</MDBBadge>
                   <br />
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Dashboard from "../components/container/dashboard";
+import Services from "../components/container/services";
 import Equipment from "../components/container/equipment";
 import Exercise from "../components/container/exercise";
 import Fee from "../components/container/fee";
@@ -28,11 +29,14 @@ import RegisterRecords from "../components/common/registerPhysical";
 import CheckIn from "../components/common/checkIn";
 import CheckOut from "../components/common/checkout";
 import Attendance from "../components/common/attendance";
+import RegisterService from "../components/common/registerService";
 
 const Routes = () => {
   return (
     <Switch>
       <Route path="/dashboard" component={Dashboard}></Route>
+      <Route path="/service/" component={Services}></Route>
+      <Route path="/registerService/:id?" component={RegisterService}></Route>
       <Route path="/logout" component={Logout}></Route>
       <Route path="/attendance" component={Attendance}></Route>
       <Route path="/checkIn/new" component={CheckIn}></Route>

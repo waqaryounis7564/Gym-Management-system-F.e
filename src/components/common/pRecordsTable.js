@@ -39,7 +39,11 @@ const Table = ({ records, handleDelete }) => {
                     {record.member.name}
                   </Link>
                 </td>
-                <td>{record.exercise.name}</td>
+                <td>
+                  {record.exercises.map(exercise => (
+                    <li key={exercise._id}>{exercise.name}</li>
+                  ))}
+                </td>
                 <td>{record.month}</td>
                 <td>{record.height}</td>
                 <td>{record.weight}</td>

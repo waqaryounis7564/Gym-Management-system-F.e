@@ -1,5 +1,6 @@
 import React from "react";
 import Form from "./reForm";
+import { ToastContainer, toast } from "react-toastify";
 import {
   MDBContainer,
   MDBRow,
@@ -8,6 +9,7 @@ import {
   MDBInput,
   MDBFormInline
 } from "mdbreact";
+import { InputLabel, MenuItem, Select, FormControl } from "@material-ui/core";
 
 import {
   getEquipments,
@@ -29,11 +31,14 @@ class RegisterEquipment extends Form {
     radio: ""
   };
 
-  equipmentHandler = nr => e => {
-    this.state.data.equipmentAvailability = e.currentTarget.name;
+  equipmentHandler = equipment => {
+    const data = { ...this.state.data };
+    data.equipmentAvailability = equipment;
+
     this.setState({
-      radio: nr
+      data
     });
+    console.log(data);
   };
 
   handleChange = e => {
@@ -56,10 +61,16 @@ class RegisterEquipment extends Form {
     console.log(equipment);
   }
   handleSubmit = async () => {
-    console.log("clicked");
-    console.log(this.state.data);
-    await saveEquipment(this.state.data);
-    this.props.history.push("/equipment");
+    try {
+      console.log("clicked");
+      console.log(this.state.data);
+      await saveEquipment(this.state.data);
+      this.props.history.push("/equipment");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        toast.warn(ex.response.data);
+      }
+    }
   };
   mapToViewModel = result => {
     return {
@@ -72,6 +83,7 @@ class RegisterEquipment extends Form {
   render() {
     return (
       <React.Fragment>
+        <ToastContainer></ToastContainer>
         <MDBContainer>
           <MDBRow>
             <MDBCol md="6">
@@ -111,32 +123,28 @@ class RegisterEquipment extends Form {
                     onChange={this.handleChange}
                   />
 
-                  <label>equipment Status</label>
+                  <InputLabel id="simple-select-label">
+                    Equipment Status
+                  </InputLabel>
+                  <br />
+                  <Select
+                    autoWidth={true}
+                    displayEmpty={true}
+                    renderValue={() => this.state.data.equipmentAvailability}
+                    name="equipmentAvailability"
+                    label="simple-select-label"
+                    id="simple-select"
+                    value={this.state.data.equipmentAvailability}
+                    onChange={({ target }) =>
+                      this.equipmentHandler(target.value)
+                    }
+                  >
+                    <MenuItem value={"available"}>available</MenuItem>
+                    <MenuItem value={"unavailable"}>unavailable</MenuItem>
+                  </Select>
 
-                  <MDBFormInline>
-                    <MDBInput
-                      label="Available"
-                      name="available"
-                      icon="check"
-                      group
-                      type="radio"
-                      id="radio1"
-                      containerClass="mr-5"
-                      onClick={this.equipmentHandler(1)}
-                      checked={this.state.radio === 1 ? true : false}
-                    />
-                    <MDBInput
-                      icon="times"
-                      label="UnAvailable"
-                      name="unavailable"
-                      group
-                      type="radio"
-                      id="radio2"
-                      containerClass="mr-5"
-                      onClick={this.equipmentHandler(2)}
-                      checked={this.state.radio === 2 ? true : false}
-                    />
-                  </MDBFormInline>
+                  <br />
+                  <br />
                 </div>
                 <div className="text-center">
                   <MDBBtn color="primary" onClick={this.handleSubmit}>

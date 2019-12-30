@@ -52,7 +52,7 @@ class CreateExercise extends Component {
       this.props.history.push("/exercise");
     } catch (ex) {
       if (ex.response && ex.response.status === 400)
-        toast.info("empty field is not allowed");
+        toast.info(ex.response.data);
     }
   };
   render() {

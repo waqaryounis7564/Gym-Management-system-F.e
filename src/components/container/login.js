@@ -35,6 +35,10 @@ class Login extends reForm {
       .trim()
   };
 
+  componentDidMount() {
+    document.body.id = "login";
+  }
+
   doSubmit = async () => {
     try {
       const { data } = this.state;

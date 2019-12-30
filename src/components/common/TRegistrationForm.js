@@ -2,6 +2,7 @@ import React from "react";
 import { InputLabel, MenuItem, Select, FormControl } from "@material-ui/core";
 import { getTrainer, saveTrainer } from "../../service/trainerService";
 import { getMembers } from "../../service/memberService";
+import { ToastContainer, toast } from "react-toastify";
 
 import DatePicker from "react-datepicker";
 import Form from "./reForm";
@@ -25,13 +26,11 @@ class FormRegistration extends Form {
       gender: "",
       age: "",
       cnic: "",
-      dateOfJoining: "",
-      assignedMember_id: "",
-      memberName: ""
+      dateOfJoining: ""
     },
-    errors: {},
+
     members: [],
-    startDate: new Date("this.state.data.dateOfJoining")
+    startDate: new Date()
   };
   handleGender = gender => {
     const data = { ...this.state.data };
@@ -45,13 +44,13 @@ class FormRegistration extends Form {
 
   dateHandler = date => {
     const data = { ...this.state.data };
+
     let time = date.toLocaleDateString("en-US", {
       day: "numeric",
       month: "long",
       year: "numeric"
     });
     data.dateOfJoining = time;
-    console.log(time);
 
     this.setState({
       startDate: date,
@@ -64,6 +63,8 @@ class FormRegistration extends Form {
     data[e.currentTarget.name] = e.currentTarget.value;
 
     this.setState({ data });
+    // console.log("value argument", value);
+    console.log(e);
   };
   handleChange = id => {
     const data = { ...this.state.data };
@@ -73,13 +74,7 @@ class FormRegistration extends Form {
     this.setState({ data });
     console.log(id[1]);
   };
-  options = () => {
-    const { members } = this.state;
-    const MenuItems = members.map(member => (
-      <MenuItem value={[member._id, member.name]}>{member.name}</MenuItem>
-    ));
-    return MenuItems;
-  };
+
   async componentDidMount() {
     const { data: members } = await getMembers();
     this.setState({ members });
@@ -93,27 +88,35 @@ class FormRegistration extends Form {
   mapToViewModel = user => {
     return {
       _id: user._id,
-      assignedMember_id: user.memberAssigned._id,
+
       name: user.name,
       mobile: user.mobile,
       cnic: user.cnic,
       gender: user.gender,
       age: user.age,
-      dateOfJoining: user.dateOfJoining,
-      memberName: user.memberAssigned.name
+      dateOfJoining: user.dateOfJoining
     };
   };
 
   doSubmit = async () => {
-    console.log("clicked");
-    console.log(this.state.data);
-    await saveTrainer(this.state.data);
-    this.props.history.push("/trainer");
+    try {
+      console.log("clicked");
+      console.log(this.state.data);
+      await saveTrainer(this.state.data);
+      this.props.history.push("/trainer");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 409) {
+        toast("Trainer already registered");
+      } else if (ex.response && ex.response.status === 400) {
+        toast.error(ex.response.data);
+      }
+    }
   };
 
   render() {
     return (
       <React.Fragment>
+        <ToastContainer></ToastContainer>
         <MDBContainer>
           <MDBRow>
             <MDBCol md="6">
@@ -169,29 +172,9 @@ class FormRegistration extends Form {
                     onChange={this.onChange}
                   />
 
-                  <div className="form-group">
-                    <InputLabel id="demo-simple-select-label">
-                      Members
-                    </InputLabel>
-                    <Select
-                      className="form-control"
-                      autoWidth={true}
-                      displayEmpty={true}
-                      renderValue={() => this.state.data.memberName}
-                      name="assignedMember_id"
-                      label="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={this.state.data.assignedMember_id}
-                      onChange={({ target }) => this.handleChange(target.value)}
-                    >
-                      <MenuItem value={""}>None</MenuItem>
-                      {this.options()}
-                    </Select>
-                  </div>
-
                   <InputLabel id="simple-select-label">Gender</InputLabel>
+                  <br />
                   <Select
-                    className="form-control"
                     autoWidth={true}
                     displayEmpty={true}
                     renderValue={() => this.state.data.gender}
