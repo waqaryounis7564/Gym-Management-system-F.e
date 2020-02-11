@@ -10,6 +10,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "./dashboard.css";
 import Table from "../common/table";
+import Search from "../common/search";
 
 class Member extends Component {
   state = {
@@ -31,6 +32,7 @@ class Member extends Component {
     document.body.id = "member";
     const { data: members } = await getMembers();
     this.setState({ members });
+    console.log("stateMembers", members);
   }
 
   doSubmit = async () => {
@@ -51,6 +53,30 @@ class Member extends Component {
       this.setState({ members: originalState });
     }
   };
+
+  handleSearchChange = e => {
+    console.log(e.target.value);
+    let currentList = [];
+
+    let newList = [];
+
+    if (e.target.value !== "") {
+      currentList = this.state.members;
+
+      newList = currentList.filter(item => {
+        const lc = item.name.toLowerCase();
+
+        const filter = e.target.value.toLowerCase();
+
+        return lc.includes(filter);
+      });
+    } else {
+      newList = this.state.members;
+      window.location.reload(false);
+    }
+
+    this.setState({ members: newList });
+  };
   render() {
     const { members, exercises } = this.state;
 
@@ -58,6 +84,7 @@ class Member extends Component {
       <div className="gradient">
         <ToastContainer></ToastContainer>
         <h1>Members</h1>
+        <Search search={this.handleSearchChange}></Search>
         <Link to="/registerUser/new">
           <MDBBtn gradient="purple">Register New User</MDBBtn>
         </Link>

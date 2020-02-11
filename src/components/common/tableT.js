@@ -21,26 +21,34 @@ const Table = ({ trainers, handleDelete }) => {
           </tr>
         </thead>
         <tbody>
-          {trainers.map(trainer => (
-            <tr key={trainer._id}>
-              <td>{trainers.indexOf(trainer) + 1}</td>
+          {trainers.length === 0 ? (
+            <React.Fragment>
+              <div class="spinner-grow text-primary slow" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </React.Fragment>
+          ) : (
+            trainers.map(trainer => (
+              <tr key={trainer._id}>
+                <td>{trainers.indexOf(trainer) + 1}</td>
 
-              <td>
-                <Link to={`/registerTrainer/${trainer._id}`}>
-                  {trainer.name}
-                </Link>
-              </td>
+                <td>
+                  <Link to={`/registerTrainer/${trainer._id}`}>
+                    {trainer.name}
+                  </Link>
+                </td>
 
-              <td>{trainer.mobile}</td>
-              <td>{trainer.gender}</td>
-              <td>{trainer.age}</td>
-              <td>{trainer.cnic}</td>
-              <td>{trainer.dateOfJoining}</td>
-              <td>
-                <Button delete={() => handleDelete(trainer._id)} />
-              </td>
-            </tr>
-          ))}
+                <td>{trainer.mobile}</td>
+                <td>{trainer.gender}</td>
+                <td>{trainer.age}</td>
+                <td>{trainer.cnic}</td>
+                <td>{trainer.dateOfJoining}</td>
+                <td>
+                  <Button delete={() => handleDelete(trainer._id)} />
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </React.Fragment>
